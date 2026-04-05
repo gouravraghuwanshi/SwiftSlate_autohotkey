@@ -1,6 +1,6 @@
 # SwiftSlate Desktop 🚀
 
-**SwiftSlate Desktop** is a lightweight, high-performance AI text assistant based on AutoHotkey. Inspired by the [SwiftSlate](https://github.com/Musheer360/SwiftSlate) Android project, this tool brings seamless, system-wide AI text transformation to your desktop.
+**SwiftSlate Desktop** is a lightweight, high-performance AI text Autohotkey assistant for Windows. Inspired by the [SwiftSlate](https://github.com/Musheer360/SwiftSlate) Android project, this tool brings seamless, system-wide AI text transformation to your desktop.
 
 No context switching. No copy-pasting. Just type a command, and watch your text transform instantly in any application—from VS Code and Slack to your web browser.
 
@@ -8,11 +8,11 @@ No context switching. No copy-pasting. Just type a command, and watch your text 
 
 ## ✨ Features
 
-* **🌐 Works Everywhere**: Since it runs via AutoHotkey, it integrates into any Windows text field (Browsers, IDEs, Word, WhatsApp Desktop, etc.).
+* **🤖 Multi-Model Support**: Choose between **Google Gemini** (1.5 Flash/Pro) or **Groq** (GPT-OSS, Llama 3, etc.) for your backend.
+* **🌐 Works Everywhere**: Integrates into any Windows text field (Browsers, IDEs, Word, WhatsApp Desktop, etc.).
 * **⚡ Inline Replacement**: Commands are processed in-place. Your original text is replaced by the AI response automatically.
-* **🤖 Powered by Groq**: Utilizes the high-speed Groq API (`openai/gpt-oss-120b`) for near-instant latency.
-* **🪶 Zero Footprint**: Extremely lightweight script with minimal RAM usage.
-* **🔒 Privacy First**: Your text is only sent to the API when you explicitly trigger a command.
+* **🪶 Zero Footprint**: Extremely lightweight AutoHotkey v2 script with minimal RAM usage.
+* **🔒 Privacy First**: Your text is only sent to the API provider of your choice when you explicitly trigger a command.
 
 ---
 
@@ -33,32 +33,25 @@ Simply type your text followed by a trigger to transform it:
 
 ---
 
-## 🚀 How It Works
-
-1.  **Input Detection**: The script monitors for specific "hotstrings" (like `?fix`).
-2.  **Context Capture**: Once triggered, the script automatically highlights the text to the left of your cursor.
-3.  **AI Processing**: The text is sent to the Groq API with a specialized hidden prompt.
-4.  **Instant Replace**: The script deletes the old text and "pastes" the AI-enhanced version back into the field.
-
----
-
-## 📦 Setup & Usage
+## 🚀 Setup & Usage
 
 ### Prerequisites
 * [AutoHotkey v2.0+](https://www.autohotkey.com/) installed.
-* A [Groq API Key](https://console.groq.com/).
+* An API Key from [Google AI Studio](https://aistudio.google.com/) **OR** [Groq Cloud](https://console.groq.com/).
 
 ### Installation
 1.  Download the `SwiftSlate.ahk` script.
-2.  Open the script in any text editor.
-3.  Find the line `global API_KEY := "YOUR_GROQ_API_KEY"` and paste your key between the quotes.
+2.  Open the script in any text editor (e.g., Notepad).
+3.  **Configure your provider**:
+    * Set `global PROVIDER := "gemini"` or `"groq"`.
+    * Paste your API key into the corresponding variable (`GEMINI_KEY` or `GROQ_KEY`).
 4.  Save and double-click the script to run it.
 
 ---
 
 ## 🤝 Acknowledgments
 
-A huge thanks to the [SwiftSlate](https://github.com/Musheer360/SwiftSlate) team for the brilliant concept of trigger-based inline text AI. This project aims to bring that same fluid experience to Windows power users.
+Special thanks to the [SwiftSlate](https://github.com/Musheer360/SwiftSlate) team for the original concept. This desktop port aims to provide that same fluid, "AI-at-your-fingertips" experience for Windows power users.
 
 ---
 
