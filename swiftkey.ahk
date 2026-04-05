@@ -14,12 +14,12 @@ global GEMINI_KEY := "you api"
 ; --- Set Active Config based on Provider ---
 if (PROVIDER == "gemini") {
     global API_KEY := GEMINI_KEY
-    global API_URL := "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions" ; Highly recommended for speed
+    global API_URL := "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
     global MODEL   := "gemini-2.5-flash-lite" 
 } else {
     global API_KEY := GROQ_KEY
     global API_URL := "https://api.groq.com/openai/v1/chat/completions"
-    global MODEL   := "openai/gpt-oss-120b"
+    global MODEL   := "openai/gpt-oss-120b"  ; Highly recommended for speed
 }
 
 ; ==============================================================================
