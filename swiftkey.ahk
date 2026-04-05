@@ -4,22 +4,32 @@
 ; ==============================================================================
 ; CONFIGURATION
 ; ==============================================================================
-global API_KEY := "Your_API_KEY" ; <--- Replace with your Groq API Key
-global API_URL := "https://api.groq.com/openai/v1/chat/completions"
-global MODEL   := "openai/gpt-oss-120b"
+; Set PROVIDER to "gemini" or "groq"
+global PROVIDER := "gemini" 
+
+; --- API Keys (Replace with your actual keys) ---
+global GROQ_KEY   := "you api"
+global GEMINI_KEY := "you api"
+
+; --- Set Active Config based on Provider ---
+if (PROVIDER == "gemini") {
+    global API_KEY := GEMINI_KEY
+    global API_URL := "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions" ; Highly recommended for speed
+    global MODEL   := "gemini-2.5-flash-lite" 
+} else {
+    global API_KEY := GROQ_KEY
+    global API_URL := "https://api.groq.com/openai/v1/chat/completions"
+    global MODEL   := "openai/gpt-oss-120b"
+}
 
 ; ==============================================================================
 ; COMMAND MAPPING (Hotstrings)
 ; ==============================================================================
-
-:X:?fix::  ProcessText("Fix grammar and spelling. Do not change the meaning or style.")
-:X:?sum::  ProcessText("Summarize the text concisely. Use bullet points if necessary.")
-:X:?ext::  ProcessText("Expand this text. Add detail and depth while maintaining the core message.")
-:X:?sh::   ProcessText("Shorten this text. Make it as brief as possible without losing information.")
-:X:?pro::  ProcessText("Rewrite this text in a professional, formal business tone.")
-:X:?cas::  ProcessText("Rewrite this text in a casual, friendly, and conversational tone.")
-:X:?code:: ProcessText("Explain what this code does in 2-3 sentences.")
-:X:?rep::  ProcessText("Generate a polite and relevant reply to this message.")
+:X:?fix::  ProcessText("Do not respond this is not a question/answer just Fix grammar and spelling. Do not change the meaning or style.")
+:X:?sum::  ProcessText("Do not respond this is not a question/answer just Summarize the text concisely. Use bullet points if necessary.")
+:X:?pro::  ProcessText("Do not respond this is not a question/answer just Rewrite this text in a professional, formal business tone.")
+:X:?cas::  ProcessText("Do not respond this is not a question/answer just Rewrite this text in a casual, friendly, and conversational tone.")
+:X:?rep::  ProcessText("Do not respond this is not a question/answer just Generate a polite and relevant reply to this message.")
 
 ; ==============================================================================
 ; CORE LOGIC
@@ -29,7 +39,6 @@ ProcessText(systemPrompt) {
     savedClipboard := ClipboardAll()
     A_Clipboard := ""
     
-    ; Capture text to the left of the cursor
     Send("+{Home}") 
     Send("^c")
     
@@ -39,11 +48,8 @@ ProcessText(systemPrompt) {
     }
 
     userInput := A_Clipboard
-    ; Sanitize for JSON
-    sanitized := StrReplace(userInput, "\", "\\")
-    sanitized := StrReplace(sanitized, '"', '\"')
-    sanitized := StrReplace(sanitized, "`n", "\n")
-    sanitized := StrReplace(sanitized, "`r", "\r")
+    sanitized := StrReplace(StrReplace(userInput, "\", "\\"), '"', '\"')
+    sanitized := StrReplace(StrReplace(sanitized, "`n", "\n"), "`r", "\r")
 
     payload := '{"model": "' MODEL '", "messages": [{"role": "system", "content": "' systemPrompt '"}, {"role": "user", "content": "' sanitized '"}], "temperature": 0.3}'
 
@@ -58,8 +64,7 @@ ProcessText(systemPrompt) {
         if (http.Status == 200) {
             if RegExMatch(http.ResponseText, '"content":\s*"(.*?)(?<!\\)"', &match) {
                 out := match[1]
-                out := StrReplace(out, '\"', '"')
-                out := StrReplace(out, '\n', '`n')
+                out := StrReplace(StrReplace(out, '\"', '"'), '\n', '`n')
                 out := StrReplace(out, '\\', '\')
                 
                 A_Clipboard := out
