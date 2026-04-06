@@ -8,7 +8,7 @@ No context switching. No copy-pasting. Just type a command, and watch your text 
 
 ## ✨ Features
 
-* **🤖 Multi-Model Support**: Choose between **Google Gemini** (1.5 Flash/Pro) or **Groq** (GPT-OSS, Llama 3, etc.) for your backend.
+* **🤖 Multi-Model Support**: Choose between **Google Gemini** (2.5 Flash lite) or **Groq** (GPT-OSS, Llama 3, etc.) for your backend.
 * **🌐 Works Everywhere**: Integrates into any Windows text field (Browsers, IDEs, Word, WhatsApp Desktop, etc.).
 * **⚡ Inline Replacement**: Commands are processed in-place. Your original text is replaced by the AI response automatically.
 * **🪶 Zero Footprint**: Extremely lightweight AutoHotkey v2 script with minimal RAM usage.
