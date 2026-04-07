@@ -8,7 +8,7 @@ By leveraging **AutoHotkey v2.0**, the script allows you to trigger complex AI t
 
 ## ✨ Key Features
 
-* [cite_start]**Dual Provider Support**: Choose between **Google Gemini** or **Groq** as your processing engine[cite: 2, 3].
+* **Dual Provider Support**: Choose between **Google Gemini** or **Groq** as your processing engine.
 * **Optimized for Speed**: Specifically configured for low-latency models like `gemini-2.5-flash-lite` or `openai/gpt-oss-120b`.
 * **Direct-Action Prompts**: Custom system instructions ensure the AI returns **only** the processed text, eliminating conversational "fluff" or preamble.
 * **Zero Context Switching**: Automatically captures text to the left of your cursor and replaces it instantly using a native paste command.
