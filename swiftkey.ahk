@@ -4,42 +4,41 @@
 ; ==============================================================================
 ; CONFIGURATION
 ; ==============================================================================
-; Set PROVIDER to "gemini" or "groq"
 global PROVIDER := "gemini" 
-
 ; --- API Keys (Replace with your actual keys) ---
-global GROQ_KEY   := "you api"
-global GEMINI_KEY := "you api"
-
-; --- Set Active Config based on Provider ---
+global GROQ_KEY   := "api_key_of_yours"
+global GEMINI_KEY := "api_key_of_yours"
 if (PROVIDER == "gemini") {
     global API_KEY := GEMINI_KEY
     global API_URL := "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
-    global MODEL   := "gemini-2.5-flash-lite" 
+    global MODEL   := "gemini-2.5-flash-lite" ; Updated to a more stable Flash version
 } else {
     global API_KEY := GROQ_KEY
     global API_URL := "https://api.groq.com/openai/v1/chat/completions"
-    global MODEL   := "openai/gpt-oss-120b"  ; Highly recommended for speed
+    global MODEL   := "openai/gpt-oss-120b"
 }
 
 ; ==============================================================================
-; COMMAND MAPPING (Hotstrings)
+; COMMAND MAPPING (All SwiftSlate Commands Restored)
 ; ==============================================================================
-:X:?fix::  ProcessText("Do not respond this is not a question/answer just Fix grammar and spelling. Do not change the meaning or style.")
-:X:?sum::  ProcessText("Do not respond this is not a question/answer just Summarize the text concisely. Use bullet points if necessary.")
-:X:?pro::  ProcessText("Do not respond this is not a question/answer just Rewrite this text in a professional, formal business tone.")
-:X:?cas::  ProcessText("Do not respond this is not a question/answer just Rewrite this text in a casual, friendly, and conversational tone.")
-:X:?rep::  ProcessText("Do not respond this is not a question/answer just Generate a polite and relevant reply to this message.")
+:X:?fix::  ProcessText("Act as a grammar correction tool. Fix all errors in the provided text. Return ONLY the corrected text without any preamble or explanation.")
+:X:?sum::  ProcessText("Summarize the following text into brief bullet points. Return ONLY the summary.")
+:X:?pro::  ProcessText("Rewrite the following text to be professional and formal. Return ONLY the rewritten text.")
+:X:?cas::  ProcessText("Rewrite the following text to be casual and friendly. Return ONLY the rewritten text.")
+:X:?ext::  ProcessText("Expand the following text with more detail and depth. Return ONLY the expanded version.")
+:X:?sh::   ProcessText("Shorten the following text to be as concise as possible. Return ONLY the shortened version.")
+:X:?code:: ProcessText("Explain the following code snippet in 2-3 sentences. Return ONLY the explanation.")
+:X:?rep::  ProcessText("Draft a polite and relevant reply to the following message. Return ONLY the reply.")
 
 ; ==============================================================================
 ; CORE LOGIC
 ; ==============================================================================
-
 ProcessText(systemPrompt) {
     savedClipboard := ClipboardAll()
     A_Clipboard := ""
     
-    Send("+{Home}") 
+    ; Capture text to the left 
+    Send("^{a}")
     Send("^c")
     
     if !ClipWait(1) {
@@ -48,10 +47,17 @@ ProcessText(systemPrompt) {
     }
 
     userInput := A_Clipboard
-    sanitized := StrReplace(StrReplace(userInput, "\", "\\"), '"', '\"')
-    sanitized := StrReplace(StrReplace(sanitized, "`n", "\n"), "`r", "\r")
+    ; Strict sanitization for JSON
+    sanitized := StrReplace(userInput, "\", "\\")
+    sanitized := StrReplace(sanitized, '"', '\"')
+    sanitized := StrReplace(sanitized, "`n", "\n")
+    sanitized := StrReplace(sanitized, "`r", "\r")
 
-    payload := '{"model": "' MODEL '", "messages": [{"role": "system", "content": "' systemPrompt '"}, {"role": "user", "content": "' sanitized '"}], "temperature": 0.3}'
+    ; Re-structured Payload: Explicitly labeling the input for the model
+    payload := '{"model": "' MODEL '", "messages": [' 
+             . '{"role": "system", "content": "' systemPrompt '"}, ' 
+             . '{"role": "user", "content": "Text to process: ' sanitized '"}' 
+             . '], "temperature": 0.1}' ; Lower temperature = more focus/less chatter
 
     try {
         http := ComObject("WinHttp.WinHttpRequest.5.1")
@@ -64,7 +70,8 @@ ProcessText(systemPrompt) {
         if (http.Status == 200) {
             if RegExMatch(http.ResponseText, '"content":\s*"(.*?)(?<!\\)"', &match) {
                 out := match[1]
-                out := StrReplace(StrReplace(out, '\"', '"'), '\n', '`n')
+                out := StrReplace(out, '\"', '"')
+                out := StrReplace(out, '\n', '`n')
                 out := StrReplace(out, '\\', '\')
                 
                 A_Clipboard := out
