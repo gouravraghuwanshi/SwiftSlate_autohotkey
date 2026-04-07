@@ -38,7 +38,8 @@ ProcessText(systemPrompt) {
     A_Clipboard := ""
     
     ; Capture text to the left 
-    Send("^{a}")
+    ; Send("^{a}")
+    Send("^+{Home}") 
     Send("^c")
     
     if !ClipWait(1) {
