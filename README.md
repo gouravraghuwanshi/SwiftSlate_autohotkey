@@ -2,23 +2,18 @@
 
 **SwiftSlate Desktop** is a high-precision, lightweight AI text assistant for Windows. Inspired by the [SwiftSlate](https://github.com/Musheer360/SwiftSlate) Android project, this tool provides system-wide, inline text transformation using high-speed LLMs.
 
-By leveraging **AutoHotkey v2.0**, the script allows you to trigger complex AI tasks—like grammar correction or summarization—directly within any text field without ever leaving your active application.
-
 ---
 
 ## ✨ Key Features
 
-* **Dual Provider Support**: Choose between **Google Gemini** or **Groq** as your processing engine.
-* **Optimized for Speed**: Specifically configured for low-latency models like `gemini-2.5-flash-lite` or `openai/gpt-oss-120b`.
-* **Direct-Action Prompts**: Custom system instructions ensure the AI returns **only** the processed text, eliminating conversational "fluff" or preamble.
-* **Zero Context Switching**: Automatically captures text to the left of your cursor and replaces it instantly using a native paste command.
-* **Deterministic Output**: Uses a low temperature setting (0.1) to ensure consistent, literal, and focused results.
+* **Triple Provider Support**: Choose between **Google Gemini**, **Groq**, or **Mistral AI** as your processing engine.
+* **Streamlined Selection**: Uses native Windows shortcuts to capture text within any active input field.
+* **Direct-Action Prompts**: Custom system instructions ensure the AI returns **only** the processed text, eliminating conversational preamble.
+* **Zero Context Switching**: Automatically captures text in the current input field and replaces it instantly.
 
 ---
 
 ## 🛠 Built-in Commands
-
-Type your text followed by one of these triggers to transform it:
 
 | Trigger | Action | AI Instruction Purpose |
 | :--- | :--- | :--- |
@@ -26,7 +21,7 @@ Type your text followed by one of these triggers to transform it:
 | `?sum` | **Summarize** | Condenses text into concise bullet points. |
 | `?pro` | **Professional** | Rewrites text in a formal business tone. |
 | `?cas` | **Casual** | Rewrites text in a friendly, conversational tone. |
-| `?ext` | **Extend** | Elaborates and adds depth to the message. |
+| `?ext` | **Extend** | Elaborates and adds detail to the message. |
 | `?sh` | **Shorten** | Makes the text as brief as possible. |
 | `?code`| **Explain Code**| Provides a 2-3 sentence technical explanation. |
 | `?rep` | **Reply** | Generates a polite and relevant response. |
@@ -36,25 +31,18 @@ Type your text followed by one of these triggers to transform it:
 ## 🚀 Setup & Installation
 
 ### 1. Prerequisites
-* **AutoHotkey v2.0+**: Ensure the latest version of AHK is installed.
-* **API Credentials**: You will need a valid key from [Google AI Studio](https://aistudio.google.com/) or [Groq Cloud](https://console.groq.com/).
+* **AutoHotkey v2.0+**
+* API Credentials from [Google AI Studio](https://aistudio.google.com/), [Groq Cloud](https://console.groq.com/), or [Mistral Console](https://console.mistral.ai/).
 
 ### 2. Configuration
-Open `swiftkey.ahk` in a text editor and update the following variables:
-
-* **Provider**: Set `global PROVIDER := "gemini"` or `"groq"`.
-* **API Keys**: Paste your respective keys into `global GROQ_KEY` or `global GEMINI_KEY`.
-* **Model Selection**: The script is optimized for `gemini-2.5-flash-lite` or `openai/gpt-oss-120b`.
+Open `swiftkey.ahk` and update:
+* `PROVIDER`: Set to `"gemini"`, `"groq"`, or `"mistral"`.
+* `KEYS`: Paste your respective API keys.
 
 ### 3. Usage
 1. Run the `swiftkey.ahk` script.
-2. In any application, type a sentence (e.g., `i am go home ?fix`).
-3. The script will highlight the text, call the API, and paste the corrected result automatically.
-
----
-
-## 🤝 Acknowledgments
-A special thanks to the original [SwiftSlate](https://github.com/Musheer360/SwiftSlate) project for the concept. This desktop implementation brings that vision to Windows, optimized for speed and professional workflows.
+2. In any application, type your text followed by a trigger (e.g., `i has a error ?fix`).
+3. The script will highlight the text and replace it with the AI-optimized version automatically.
 
 ---
 
