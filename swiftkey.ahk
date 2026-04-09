@@ -16,7 +16,7 @@ global MISTRAL_KEY := "YOUR_MISTRAL_KEY"
 if (PROVIDER == "gemini") {
     global API_KEY := GEMINI_KEY
     global API_URL := "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
-    global MODEL   := "gemini-1.5-flash"
+    global MODEL   := "gemini-2.5-flash-lite"
 } else if (PROVIDER == "groq") {
     global API_KEY := GROQ_KEY
     global API_URL := "https://api.groq.com/openai/v1/chat/completions"
